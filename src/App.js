@@ -1,25 +1,52 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './component/Header';
+import TodoEditor from './component/TodoEditor';
+import TodoList from './component/TodoList';
+import { useState, useRef } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const mockTodo = [
+		{
+			id: 0,
+			isDone: false,
+			content: "react 공부",
+			createDate: new Date().getTime()
+		},
+		{
+			id: 1,
+			isDone: true,
+			content: "산책하기",
+			createDate: new Date().getTime()
+		},
+		{
+			id: 2,
+			isDone: false,
+			content: "송편 먹기",
+			createDate: new Date().getTime()
+		},
+	]
+
+	const [todo, setTodo] = useState(mockTodo);
+	const idRef = useRef(3);
+
+	const onCreate = (content) => {
+		const newItem = {
+			id: idRef.current,
+			content,
+			isDone: false,
+			createDate: new Date().getTime(),
+		}
+		setTodo([newItem, ...todo]);
+		idRef.current += 1;
+	};
+
+	return (
+		<div className="App">
+			<Header />
+			<TodoEditor onCreate={onCreate} />
+			<TodoList />
+		</div>
+	);
 }
 
 export default App;
